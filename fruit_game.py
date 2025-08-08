@@ -38,7 +38,7 @@ class player:
         self.image = pygame.image.load('images/boar_player.png')
         self.x = 368
         self.y = 480
-        self.speed = 8
+        self.speed = 7
         self.x_change = 0
         self.y_change = 0
         self.rect = self.image.get_rect()
