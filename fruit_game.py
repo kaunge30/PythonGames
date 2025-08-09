@@ -43,8 +43,21 @@ class player:
         self.y_change = 0
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
-
-
+    def update(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_w] or keys[pygame.K_UP]:
+            self.y_change = -self.speed
+        elif keys[pygame.K_s] or keys[pygame.K_DOWN]:
+            self.y_change = self.speed
+        elif keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+            self.x_change = self.speed
+        elif keys[pygame.K_a] or keys[pygame.K_LEFT]:
+            self.x_change = -self.speed
+        else:
+            self.x_change = 0
+            self.y_change = 0
+        self.x += self.x_change
+        self.y += self.y_change
 player = player()
 
 # background color
@@ -127,33 +140,12 @@ while is_running:
             curr_fruit = fruits.pop()
             spawnned_fruits.append(curr_fruit)
         
-        if event.type == pygame.KEYDOWN:#if any keys are being pressed.
-            if event.key == pygame.K_UP:# if they key that is being pressed is the  up key. 
-                player.y_change = -player.speed
-            if event.key == pygame.K_DOWN:  
-                player.y_change = player.speed
-            if event.key == pygame.K_RIGHT:
-                player.x_change = player.speed
-            if event.key == pygame.K_LEFT:
-                player.x_change = -player.speed
-
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_UP:
-                player.y_change = 0
-            if event.key == pygame.K_DOWN:
-                player.y_change = 0
-        
-            if event.key == pygame.K_RIGHT:
-                player.x_change = 0
-            if event.key == pygame.K_LEFT:
-                player.x_change = 0
     if len(spawnned_fruits) > 0:
         for fruit in spawnned_fruits:
             screen.blit(fruit.image,(fruit.x, fruit.y))
             check_collisions(player,fruit)
             fruit.y += 5
-    player.x += player.x_change
-    player.y += player.y_change
+    player.update()
     check_bound(player.x, player.y)
     draw_player(player.x, player.y)
     pygame.display.update()
